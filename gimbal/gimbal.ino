@@ -29,8 +29,16 @@ void setup() {
 }
 
 void loop() {
-    if (Serial.available() >= 2 * sizeof(float)) { // Check if at least two floats are available
+
+    // 4 * motor speed(int) + 2 * position(float)
+
+    if (Serial.available() >= (4 * sizeof(int) + 2 * sizeof(float))) { // Check if at least two floats are available
     // Read the coordinates
+    speed1 = Serial.parseInt();
+    speed2 = Serial.parseInt();
+    speed3 = Serial.parseInt();
+    speed4 = Serial.parseInt();
+
     x = Serial.parseFloat();
     y = Serial.parseFloat();
 
