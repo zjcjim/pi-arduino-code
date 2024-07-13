@@ -12,7 +12,7 @@ void loop() {
         // 读取一行数据，直到换行符'\n'
         String data = Serial.readStringUntil('\n');
         // 打印读取到的数据
-        // Serial.println("Received: " + data);
+        Serial.print("Received: " + data);
         // 提取整数
         motor1 = data.substring(0, data.indexOf('M')).toInt();
         data = data.substring(data.indexOf('M') + 2);  // "20MB30MC40MD0.1SA0.2SB"
