@@ -16,7 +16,7 @@ void backward();
 void turn_left();
 void turn_right();
 void stop();
-void update_servo_position();
+void update_servo_position(int x, int y);
 
 void setup() {
   Serial.begin(9600);
@@ -30,14 +30,9 @@ void setup() {
 
 void loop() {
 
-<<<<<<< HEAD
-    // 4 * motor speed(int) + 2 * position(float)
-
-=======
     // 4 * motor speed(int) + 2 * servo angle(float)
-  
->>>>>>> c54ef0a (updated. incompleted)
-    if (Serial.available() >= (4 * sizeof(int) + 2 * sizeof(float))) { // Check if at least two floats are available
+
+    if (Serial.available() >= (4 * sizeof(int) + 2 * sizeof(float))) { 
     // Read the coordinates
     speed1 = Serial.parseInt();
     speed2 = Serial.parseInt();
@@ -48,19 +43,19 @@ void loop() {
     y = Serial.parseFloat();
 
     // Control the car's movement based on the x coordinate
-    if (x > 0.5) {
-      turn_right();
-      Serial.println("Turning right");
-    } else if (x < -0.5) {
-      turn_left();
-      Serial.println("Turning left");
-    } else {
-      stop();
-      Serial.println("Stopped");
-    }
+    // if (x > 0.5) {
+    //   turn_right();
+    //   Serial.println("Turning right");
+    // } else if (x < -0.5) {
+    //   turn_left();
+    //   Serial.println("Turning left");
+    // } else {
+    //   stop();
+    //   Serial.println("Stopped");
+    // }
 
     // Control the servos' position based on the x and y coordinates
-    update_servo_position();
+    update_servo_position(x, y);
   }
 }
 
@@ -99,16 +94,16 @@ void stop() {
   motor4.run(RELEASE);
 }
 
-void update_servo_position() {
+void update_servo_position(int x, int y) {
   // Map the x coordinate to the servo2 position (left/right)
   pos2 = 90 - x * 90;
   servo2.write(pos2);
-  delay(1);
+  delay(100);
 
   // Map the y coordinate to the servo1 position (up/down)
   pos1 =  90 - y * 90;
   servo1.write(pos1);
-  delay(1);
+  delay(100);
 
   Serial.print("Servo1 position: ");
   Serial.print(pos1);
