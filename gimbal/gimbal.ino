@@ -48,7 +48,7 @@ void loop() {
     if (Serial.available()) {
         // 读取一行数据，直到换行符'\n'
 
-        String data;
+        String data = "100 100 100 100 90 90 580";
 
         startTime = millis();
 
