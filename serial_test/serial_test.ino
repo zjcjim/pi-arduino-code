@@ -33,14 +33,18 @@ void loop() {
         position_y = data.substring(0, data.indexOf('S')).toFloat();
 
         // 打印结果
-        Serial.println("电机变量:");
-        Serial.println(motor1);
-        Serial.println(motor2);
-        Serial.println(motor3);
-        Serial.println(motor4);
+        Serial.print("motor1: ");
+        Serial.print(motor1);
+        Serial.print("motor2: ");
+        Serial.print(motor2);
+        Serial.print("motor3: ");
+        Serial.print(motor3);
+        Serial.print("motor4: ");
+        Serial.print(motor4);
 
-        Serial.println("位置变量:");
-        Serial.println(position_x, 2);  // 保留2位小数
-        Serial.println(position_y, 2);  // 保留2位小数
+        Serial.print("servo1: ");
+        Serial.print(position_x, 2);
+        Serial.print("servo2: ");
+        Serial.println(position_y, 2);
     }
 }
