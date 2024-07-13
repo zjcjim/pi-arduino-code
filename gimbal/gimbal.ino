@@ -10,6 +10,9 @@ char dataArray[50];
 int checksum = 0;
 int previous_status[6];
 
+String data = "";
+bool stringComplete = false;
+
 int pos1 = 90;
 int pos2 = 90;
 
@@ -44,82 +47,45 @@ void setup() {
 
 void loop() {
     // 4 * motor speed(int) + 2 * servo angle(float)
+    // put your main code here, to run repeatedly:
 
-    if (Serial.available()) {
-        // 读取一行数据，直到换行符'\n'
+    // 读取一行数据，直到换行符'\n'
+    startTime = millis();
 
-        String data;
-
-        startTime = millis();
-
-        while (Serial.available()) {
-            char c = Serial.read();
-            if (c == '\n') {
-                break;
-            }
-            data += c;
-        }
-
-        endTime = millis();
-        elapsedTime = endTime - startTime;
-
-        data.toCharArray(dataArray, 50);
-
+    if (stringComplete) {
+        // Serial.print(data);
+        data.toCharArray(dataArray, 30);
         // 使用sscanf解析数据
-        sscanf(dataArray, "%d %d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y, &checksum);
+        sscanf(dataArray, "%d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y);
+
+        update_servo_position(position_x, position_y);
+        motor_control(speed1, speed2, speed3, speed4);
 
         // 打印解析后的数据
-        if (checksum == speed1 + speed2 + speed3 + speed4 + position_x + position_y) {
-            Serial.print("speed1: ");
-            Serial.print(speed1);
-            Serial.print(" speed2: ");
-            Serial.print(speed2);
-            Serial.print(" speed3: ");
-            Serial.print(speed3);
-            Serial.print(" speed4: ");
-            Serial.print(speed4);
-            Serial.print(" position_x: ");
-            Serial.print(position_x);
-            Serial.print(" position_y: ");
-            Serial.print(position_y);
-
-            Serial.print(" Time: ");
-            Serial.print(elapsedTime);
-            Serial.print("\n");
-
-            update_servo_position(position_x, position_y);
-            motor_control(speed1, speed2, speed3, speed4);
-
-            previous_status[0] = speed1;
-            previous_status[1] = speed2;
-            previous_status[2] = speed3;
-            previous_status[3] = speed4;
-            previous_status[4] = position_x;
-            previous_status[5] = position_y;
-        } else {
-            Serial.print("Checksum error: ");
-            Serial.print(checksum);
-            Serial.print(" speed1: ");
-            Serial.print(speed1);
-            Serial.print(" speed2: ");
-            Serial.print(speed2);
-            Serial.print(" speed3: ");
-            Serial.print(speed3);
-            Serial.print(" speed4: ");
-            Serial.print(speed4);
-            Serial.print(" position_x: ");
-            Serial.print(position_x);
-            Serial.print(" position_y: ");
-            Serial.print(position_y);
-            Serial.print("\n");
-
-            update_servo_position(previous_status[4], previous_status[5]);
-            motor_control(previous_status[0], previous_status[1], previous_status[2], previous_status[3]);
-        }
+        Serial.print("speed1: ");
+        Serial.print(speed1);
+        Serial.print(" speed2: ");
+        Serial.print(speed2);
+        Serial.print(" speed3: ");
+        Serial.print(speed3);
+        Serial.print(" speed4: ");
+        Serial.print(speed4);
+        Serial.print(" position_x: ");
+        Serial.print(position_x);
+        Serial.print(" position_y: ");
+        Serial.print(position_y);
+        endTime = millis();
+        elapsedTime = endTime - startTime;
+        Serial.print(" Time: ");
+        Serial.print(elapsedTime);
+        Serial.print("\n");
 
         while (Serial.read() >= 0) {
             // Clear the buffer
         }
+
+        data = "";
+        stringComplete = false;
     }
 }
 
@@ -186,4 +152,14 @@ void update_servo_position(int x, int y) {
     // maybe problem here
     // Serial.print(pos1);
     // Serial.println(pos2);
+}
+
+void serialEvent() {
+    while (Serial.available()) {
+        char inChar = (char)Serial.read();
+        data += inChar;
+        if (inChar == '\n') {
+            stringComplete = true;
+        }
+    }
 }
