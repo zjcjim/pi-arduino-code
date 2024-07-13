@@ -1,4 +1,3 @@
-float x, y;
 void setup() {
     // put your setup code here, to run once:
     Serial.begin(9600);
@@ -6,12 +5,10 @@ void setup() {
 
 void loop() {
     // put your main code here, to run repeatedly:
-    while (Serial.available() > 2 * sizeof(float)) {
-        Serial.readBytes((char*)&x, sizeof(float));
-        Serial.readBytes((char*)&y, sizeof(float));
-        Serial.print("x: ");
-        Serial.print(x);
-        Serial.print(" y: ");
-        Serial.println(y);
+    if (Serial.available()) {
+        // 读取一行数据，直到换行符'\n'
+        String data = Serial.readStringUntil('\n');
+        // 打印读取到的数据
+        Serial.println("Received: " + data);
     }
 }
