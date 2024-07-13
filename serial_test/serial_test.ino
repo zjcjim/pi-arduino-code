@@ -39,6 +39,8 @@ void loop() {
           Serial.print(position_x);
           Serial.print(" position_y: ");
           Serial.print(position_y);
+          endTime = millis();
+          elapsedTime = endTime - startTime;
           Serial.print(" Time: ");
           Serial.print(elapsedTime);
           Serial.print("\n");
@@ -48,8 +50,7 @@ void loop() {
 
         //Serial.print(data);
 
-        endTime = millis();
-        elapsedTime = endTime - startTime;
+        
 
         
         }
