@@ -4,6 +4,12 @@
 float x, y;
 int pos1 = 90;
 int pos2 = 90;
+
+int speed1 = 0;
+int speed2 = 0;
+int speed3 = 0;
+int speed4 = 0;
+  
 AF_DCMotor motor1(1);
 AF_DCMotor motor2(2);
 AF_DCMotor motor3(3);
@@ -34,13 +40,13 @@ void loop() {
 
     if (Serial.available() >= (4 * sizeof(int) + 2 * sizeof(float))) { 
     // Read the coordinates
-    speed1 = Serial.parseInt();
-    speed2 = Serial.parseInt();
-    speed3 = Serial.parseInt();
-    speed4 = Serial.parseInt();
+        speed1 = Serial.parseInt();
+        speed2 = Serial.parseInt();
+        speed3 = Serial.parseInt();
+        speed4 = Serial.parseInt();
 
-    x = Serial.parseFloat();
-    y = Serial.parseFloat();
+        x = Serial.parseFloat();
+        y = Serial.parseFloat();
 
     // Control the car's movement based on the x coordinate
     // if (x > 0.5) {
@@ -55,7 +61,7 @@ void loop() {
     // }
 
     // Control the servos' position based on the x and y coordinates
-    update_servo_position(x, y);
+        update_servo_position(x, y);
   }
 }
 
@@ -105,8 +111,6 @@ void update_servo_position(int x, int y) {
   servo1.write(pos1);
   delay(100);
 
-  Serial.print("Servo1 position: ");
   Serial.print(pos1);
-  Serial.print(", Servo2 position: ");
   Serial.println(pos2);
 }
