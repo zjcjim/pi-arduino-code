@@ -33,6 +33,9 @@ void setup() {
     motor4.setSpeed(100);  // Default maximum speed
     servo1.attach(10);
     servo2.attach(9);
+
+    servo1.write(90);
+    servo2.write(90);
 }
 
 void loop() {
