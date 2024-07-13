@@ -91,6 +91,7 @@ void loop() {
             motor_control(previous_status[0], previous_status[1], previous_status[2], previous_status[3]);
         }
     }
+    }
 
     void motor_control(int speed1, int speed2, int speed3, int speed4) {
         if (speed1 > 0) {
