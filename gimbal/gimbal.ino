@@ -2,7 +2,9 @@
 #include <Servo.h>
 
 int position_x, position_y;
-char dataArray[30];
+char dataArray[50];
+int checksum = 0;
+int previous_status[6];
 
 int pos1 = 90;
 int pos2 = 90;
@@ -40,90 +42,102 @@ void loop() {
         // 读取一行数据，直到换行符'\n'
         String data = Serial.readStringUntil('\n');
 
-        data.toCharArray(dataArray, 30);
+        data.toCharArray(dataArray, 50);
 
         // 使用sscanf解析数据
-        sscanf(dataArray, "%d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y);
+        sscanf(dataArray, "%d %d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y, &checksum);
         // 打印解析后的数据
-        Serial.print("speed1: ");
-        Serial.print(speed1);
-        Serial.print(" speed2: ");
-        Serial.print(speed2);
-        Serial.print(" speed3: ");
-        Serial.print(speed3);
-        Serial.print(" speed4: ");
-        Serial.print(speed4);
-        Serial.print(" position_x: ");
-        Serial.print(position_x);
-        Serial.print(" position_y: ");
-        Serial.print(position_y);
-        Serial.print("\n");
+        if (checksum == speed1 + speed2 + speed3 + speed4 + position_x + position_y) {
+            Serial.print("speed1: ");
+            Serial.print(speed1);
+            Serial.print(" speed2: ");
+            Serial.print(speed2);
+            Serial.print(" speed3: ");
+            Serial.print(speed3);
+            Serial.print(" speed4: ");
+            Serial.print(speed4);
+            Serial.print(" position_x: ");
+            Serial.print(position_x);
+            Serial.print(" position_y: ");
+            Serial.print(position_y);
+            Serial.print("\n");
 
-        update_servo_position(position_x, position_y);
-        motor_control(speed1, speed2, speed3, speed4);
+            update_servo_position(position_x, position_y);
+            motor_control(speed1, speed2, speed3, speed4);
+
+            previous_status[0] = speed1;
+            previous_status[1] = speed2;
+            previous_status[2] = speed3;
+            previous_status[3] = speed4;
+            previous_status[4] = position_x;
+            previous_status[5] = position_y;
+        } else {
+            Serial.println("Checksum error");
+            update_servo_position(previous_status[4], previous_status[5]);
+            motor_control(previous_status[0], previous_status[1], previous_status[2], previous_status[3]);
+        }
     }
-}
 
-void motor_control(int speed1, int speed2, int speed3, int speed4) {
-    if (speed1 > 0) {
-        motor1.setSpeed(speed1);
-        motor1.run(FORWARD);
-    } else if (speed1 < 0) {
-        motor1.setSpeed(-speed1);
-        motor1.run(BACKWARD);
-    } else {
+    void motor_control(int speed1, int speed2, int speed3, int speed4) {
+        if (speed1 > 0) {
+            motor1.setSpeed(speed1);
+            motor1.run(FORWARD);
+        } else if (speed1 < 0) {
+            motor1.setSpeed(-speed1);
+            motor1.run(BACKWARD);
+        } else {
+            motor1.run(RELEASE);
+        }
+
+        if (speed2 > 0) {
+            motor2.setSpeed(speed2);
+            motor2.run(FORWARD);
+        } else if (speed2 < 0) {
+            motor2.setSpeed(-speed2);
+            motor2.run(BACKWARD);
+        } else {
+            motor2.run(RELEASE);
+        }
+
+        if (speed3 > 0) {
+            motor3.setSpeed(speed3);
+            motor3.run(FORWARD);
+        } else if (speed3 < 0) {
+            motor3.setSpeed(-speed3);
+            motor3.run(BACKWARD);
+        } else {
+            motor3.run(RELEASE);
+        }
+
+        if (speed4 > 0) {
+            motor4.setSpeed(speed4);
+            motor4.run(FORWARD);
+        } else if (speed4 < 0) {
+            motor4.setSpeed(-speed4);
+            motor4.run(BACKWARD);
+        } else {
+            motor4.run(RELEASE);
+        }
+    }
+
+    void stop() {
         motor1.run(RELEASE);
-    }
-
-    if (speed2 > 0) {
-        motor2.setSpeed(speed2);
-        motor2.run(FORWARD);
-    } else if (speed2 < 0) {
-        motor2.setSpeed(-speed2);
-        motor2.run(BACKWARD);
-    } else {
         motor2.run(RELEASE);
-    }
-
-    if (speed3 > 0) {
-        motor3.setSpeed(speed3);
-        motor3.run(FORWARD);
-    } else if (speed3 < 0) {
-        motor3.setSpeed(-speed3);
-        motor3.run(BACKWARD);
-    } else {
         motor3.run(RELEASE);
-    }
-
-    if (speed4 > 0) {
-        motor4.setSpeed(speed4);
-        motor4.run(FORWARD);
-    } else if (speed4 < 0) {
-        motor4.setSpeed(-speed4);
-        motor4.run(BACKWARD);
-    } else {
         motor4.run(RELEASE);
     }
-}
 
-void stop() {
-    motor1.run(RELEASE);
-    motor2.run(RELEASE);
-    motor3.run(RELEASE);
-    motor4.run(RELEASE);
-}
+    void update_servo_position(int x, int y) {
+        // Map the x coordinate to the servo2 position (left/right)
+        pos2 = x;
+        servo2.write(pos2);
+        delay(100);
 
-void update_servo_position(int x, int y) {
-    // Map the x coordinate to the servo2 position (left/right)
-    pos2 = x;
-    servo2.write(pos2);
-    delay(100);
+        // Map the y coordinate to the servo1 position (up/down)
+        pos1 = y;
+        servo1.write(pos1);
+        delay(100);
 
-    // Map the y coordinate to the servo1 position (up/down)
-    pos1 = y;
-    servo1.write(pos1);
-    delay(100);
-
-    Serial.print(pos1);
-    Serial.println(pos2);
-}
+        Serial.print(pos1);
+        Serial.println(pos2);
+    }
