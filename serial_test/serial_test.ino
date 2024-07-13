@@ -32,25 +32,29 @@ void loop() {
         endTime = millis();
         elapsedTime = endTime - startTime;
 
-        data.toCharArray(dataArray, 30);
-
-        // 使用sscanf解析数据
-        sscanf(dataArray, "%d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y);
-        // 打印解析后的数据
-        Serial.print("speed1: ");
-        Serial.print(speed1);
-        Serial.print(" speed2: ");
-        Serial.print(speed2);
-        Serial.print(" speed3: ");
-        Serial.print(speed3);
-        Serial.print(" speed4: ");
-        Serial.print(speed4);
-        Serial.print(" position_x: ");
-        Serial.print(position_x);
-        Serial.print(" position_y: ");
-        Serial.print(position_y);
         Serial.print(" Time: ");
         Serial.print(elapsedTime);
         Serial.print("\n");
+
+        // data.toCharArray(dataArray, 30);
+
+        // // 使用sscanf解析数据
+        // sscanf(dataArray, "%d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y);
+        // // 打印解析后的数据
+        // Serial.print("speed1: ");
+        // Serial.print(speed1);
+        // Serial.print(" speed2: ");
+        // Serial.print(speed2);
+        // Serial.print(" speed3: ");
+        // Serial.print(speed3);
+        // Serial.print(" speed4: ");
+        // Serial.print(speed4);
+        // Serial.print(" position_x: ");
+        // Serial.print(position_x);
+        // Serial.print(" position_y: ");
+        // Serial.print(position_y);
+        // Serial.print(" Time: ");
+        // Serial.print(elapsedTime);
+        // Serial.print("\n");
     }
 }
