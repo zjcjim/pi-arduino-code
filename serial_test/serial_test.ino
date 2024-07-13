@@ -1,16 +1,17 @@
+float x, y;
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
+    // put your setup code here, to run once:
+    Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  while(Serial.available()>0){
-    unsigned int x = Serial.read();
-    char* pt = (char*)&x;
-    Serial.print(pt[0]);
-    Serial.print(pt[1]);
-    Serial.print(pt[2]);
-    Serial.print(pt[3]);
-  }
+    // put your main code here, to run repeatedly:
+    while (Serial.available() > 2 * sizeof(float)) {
+        Serial.readBytes((char*)&x, sizeof(float));
+        Serial.readBytes((char*)&y, sizeof(float));
+        Serial.print("x: ");
+        Serial.print(x);
+        Serial.print(" y: ");
+        Serial.println(y);
+    }
 }
