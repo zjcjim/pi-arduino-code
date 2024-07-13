@@ -1,7 +1,10 @@
 #include <AFMotor.h>
 #include <Servo.h>
 
-float x, y;
+int speed1, speed2, speed3, speed4;
+int position_x, position_y;
+char dataArray[30];
+
 int pos1 = 90;
 int pos2 = 90;
 
@@ -9,7 +12,7 @@ int speed1 = 0;
 int speed2 = 0;
 int speed3 = 0;
 int speed4 = 0;
-  
+
 AF_DCMotor motor1(1);
 AF_DCMotor motor2(2);
 AF_DCMotor motor3(3);
@@ -25,92 +28,91 @@ void stop();
 void update_servo_position(int x, int y);
 
 void setup() {
-  Serial.begin(9600);
-  motor1.setSpeed(100);
-  motor2.setSpeed(100);
-  motor3.setSpeed(100);
-  motor4.setSpeed(100);  // Default maximum speed
-  servo1.attach(10);
-  servo2.attach(9);
+    Serial.begin(9600);
+    motor1.setSpeed(100);
+    motor2.setSpeed(100);
+    motor3.setSpeed(100);
+    motor4.setSpeed(100);  // Default maximum speed
+    servo1.attach(10);
+    servo2.attach(9);
 }
 
 void loop() {
-
     // 4 * motor speed(int) + 2 * servo angle(float)
 
-    if (Serial.available() >= (4 * sizeof(int) + 2 * sizeof(float))) { 
-    // Read the coordinates
-        speed1 = Serial.parseInt();
-        speed2 = Serial.parseInt();
-        speed3 = Serial.parseInt();
-        speed4 = Serial.parseInt();
+    if (Serial.available()) {
+        // 读取一行数据，直到换行符'\n'
+        String data = Serial.readStringUntil('\n');
 
-        x = Serial.parseFloat();
-        y = Serial.parseFloat();
+        data.toCharArray(dataArray, 30);
 
-    // Control the car's movement based on the x coordinate
-    // if (x > 0.5) {
-    //   turn_right();
-    //   Serial.println("Turning right");
-    // } else if (x < -0.5) {
-    //   turn_left();
-    //   Serial.println("Turning left");
-    // } else {
-    //   stop();
-    //   Serial.println("Stopped");
-    // }
+        // 使用sscanf解析数据
+        sscanf(dataArray, "%d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y);
+        // 打印解析后的数据
+        Serial.print("speed1: ");
+        Serial.print(speed1);
+        Serial.print(" speed2: ");
+        Serial.print(speed2);
+        Serial.print(" speed3: ");
+        Serial.print(speed3);
+        Serial.print(" speed4: ");
+        Serial.print(speed4);
+        Serial.print(" position_x: ");
+        Serial.print(position_x);
+        Serial.print(" position_y: ");
+        Serial.print(position_y);
+        Serial.print("\n");
 
-    // Control the servos' position based on the x and y coordinates
-        update_servo_position(x, y);
-  }
+        update_servo_position(position_x, position_y);
+    }
 }
 
 void forward() {
-  motor1.run(FORWARD);
-  motor2.run(FORWARD);
-  motor3.run(FORWARD);
-  motor4.run(FORWARD);
+    motor1.run(FORWARD);
+    motor2.run(FORWARD);
+    motor3.run(FORWARD);
+    motor4.run(FORWARD);
 }
 
 void backward() {
-  motor1.run(BACKWARD);
-  motor2.run(BACKWARD);
-  motor3.run(BACKWARD);
-  motor4.run(BACKWARD);
+    motor1.run(BACKWARD);
+    motor2.run(BACKWARD);
+    motor3.run(BACKWARD);
+    motor4.run(BACKWARD);
 }
 
 void turn_left() {
-  motor1.run(BACKWARD);
-  motor4.run(BACKWARD);
-  motor2.run(FORWARD);
-  motor3.run(FORWARD);
+    motor1.run(BACKWARD);
+    motor4.run(BACKWARD);
+    motor2.run(FORWARD);
+    motor3.run(FORWARD);
 }
 
 void turn_right() {
-  motor1.run(FORWARD);
-  motor4.run(FORWARD);
-  motor2.run(BACKWARD);
-  motor3.run(BACKWARD);
+    motor1.run(FORWARD);
+    motor4.run(FORWARD);
+    motor2.run(BACKWARD);
+    motor3.run(BACKWARD);
 }
 
 void stop() {
-  motor1.run(RELEASE);
-  motor2.run(RELEASE);
-  motor3.run(RELEASE);
-  motor4.run(RELEASE);
+    motor1.run(RELEASE);
+    motor2.run(RELEASE);
+    motor3.run(RELEASE);
+    motor4.run(RELEASE);
 }
 
 void update_servo_position(int x, int y) {
-  // Map the x coordinate to the servo2 position (left/right)
-  pos2 = x;
-  servo2.write(pos2);
-  delay(100);
+    // Map the x coordinate to the servo2 position (left/right)
+    pos2 = x;
+    servo2.write(pos2);
+    delay(100);
 
-  // Map the y coordinate to the servo1 position (up/down)
-  pos1 = y;
-  servo1.write(pos1);
-  delay(100);
+    // Map the y coordinate to the servo1 position (up/down)
+    pos1 = y;
+    servo1.write(pos1);
+    delay(100);
 
-  Serial.print(pos1);
-  Serial.println(pos2);
+    Serial.print(pos1);
+    Serial.println(pos2);
 }
