@@ -48,11 +48,17 @@ void loop() {
     if (Serial.available()) {
         // 读取一行数据，直到换行符'\n'
 
-        String data = "100 100 100 100 90 90 580";
+        String data;
 
         startTime = millis();
 
-        data = Serial.readStringUntil('\n');
+        while (Serial.available()) {
+            char c = Serial.read();
+            if (c == '\n') {
+                break;
+            }
+            data += c;
+        }
 
         endTime = millis();
         elapsedTime = endTime - startTime;
