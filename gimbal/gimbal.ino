@@ -51,10 +51,16 @@ void loop() {
 
         String data = Serial.readStringUntil('\n');
 
+        
+        endTime = millis();
+        elapsedTime = endTime - startTime;
+
         data.toCharArray(dataArray, 50);
 
         // 使用sscanf解析数据
         sscanf(dataArray, "%d %d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y, &checksum);
+
+        
         // 打印解析后的数据
         if (checksum == speed1 + speed2 + speed3 + speed4 + position_x + position_y) {
             Serial.print("speed1: ");
@@ -69,8 +75,7 @@ void loop() {
             Serial.print(position_x);
             Serial.print(" position_y: ");
             Serial.print(position_y);
-            endTime = millis();
-            elapsedTime = endTime - startTime;
+            
             Serial.print(" Time: ");
             Serial.print(elapsedTime);
             Serial.print("\n");
