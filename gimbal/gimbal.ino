@@ -1,7 +1,6 @@
 #include <AFMotor.h>
 #include <Servo.h>
 
-int speed1, speed2, speed3, speed4;
 int position_x, position_y;
 char dataArray[30];
 
