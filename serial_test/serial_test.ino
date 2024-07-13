@@ -29,7 +29,7 @@ void loop() {
         Serial.print(" position_x: ");
         Serial.print(position_x);
         Serial.print(" position_y: ");
-        Serial.println(position_y);
-        // 解析数据
+        Serial.print(position_y);
+        Serial.print("\n");
     }
 }

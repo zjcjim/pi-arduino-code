@@ -102,12 +102,12 @@ void stop() {
 
 void update_servo_position(int x, int y) {
   // Map the x coordinate to the servo2 position (left/right)
-  pos2 = 90 - x * 90;
+  pos2 = x;
   servo2.write(pos2);
   delay(100);
 
   // Map the y coordinate to the servo1 position (up/down)
-  pos1 =  90 - y * 90;
+  pos1 = y;
   servo1.write(pos1);
   delay(100);
 
