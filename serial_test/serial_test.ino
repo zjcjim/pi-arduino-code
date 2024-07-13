@@ -10,5 +10,6 @@ void loop() {
         String data = Serial.readStringUntil('\n');
         // 打印读取到的数据
         Serial.println("Received: " + data);
+        Serial.read();  // 读取换行符'\n'
     }
 }
