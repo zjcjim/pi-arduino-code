@@ -87,7 +87,7 @@ void loop() {
             Serial.print(" position_y: ");
             Serial.print(position_y);
             Serial.print("\n");
-            
+
             update_servo_position(previous_status[4], previous_status[5]);
             motor_control(previous_status[0], previous_status[1], previous_status[2], previous_status[3]);
         }
@@ -150,14 +150,15 @@ void stop() {
 void update_servo_position(int x, int y) {
     // Map the x coordinate to the servo2 position (left/right)
     pos2 = x;
+    pos1 = y;
+
     servo2.write(pos2);
-    delay(100);
 
     // Map the y coordinate to the servo1 position (up/down)
-    pos1 = y;
-    servo1.write(pos1);
-    delay(100);
 
-    Serial.print(pos1);
-    Serial.println(pos2);
+    servo1.write(pos1);
+
+    // maybe problem here
+    // Serial.print(pos1);
+    // Serial.println(pos2);
 }
