@@ -1,6 +1,10 @@
 #include <AFMotor.h>
 #include <Servo.h>
 
+unsigned long startTime;
+unsigned long endTime;
+unsigned long elapsedTime;
+
 int position_x, position_y;
 char dataArray[50];
 int checksum = 0;
@@ -43,6 +47,8 @@ void loop() {
 
     if (Serial.available()) {
         // 读取一行数据，直到换行符'\n'
+        startTime = millis();
+
         String data = Serial.readStringUntil('\n');
 
         data.toCharArray(dataArray, 50);
@@ -63,6 +69,10 @@ void loop() {
             Serial.print(position_x);
             Serial.print(" position_y: ");
             Serial.print(position_y);
+            endTime = millis();
+            elapsedTime = endTime - startTime;
+            Serial.print(" Time: ");
+            Serial.print(elapsedTime);
             Serial.print("\n");
 
             update_servo_position(position_x, position_y);
