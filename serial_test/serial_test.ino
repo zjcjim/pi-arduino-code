@@ -3,13 +3,13 @@ int position_x, position_y;
 
 void setup() {
     // put your setup code here, to run once:
-    // Serial.begin(9600);
-    String data = "10MA20MB30MC40MD1SA-2SB";
+    Serial.begin(9600);
+    String data = "10 20 30 40 1 -2";
     char dataArray[30];
     data.toCharArray(dataArray, 30);
 
     // 使用sscanf解析数据
-    sscanf(dataArray, "%dMA%dMB%dMC%dMD%dSA%dSB", &motor1, &motor2, &motor3, &motor4, &position_x, &position_y);
+    sscanf(dataArray, "%d %d %d %d %d %d", &motor1, &motor2, &motor3, &motor4, &position_x, &position_y);
     // 打印解析后的数据
     Serial.print("motor1: ");
     Serial.print(motor1);
