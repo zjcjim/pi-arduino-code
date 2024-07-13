@@ -62,8 +62,8 @@ void loop() {
             Serial.print(position_y);
             Serial.print("\n");
 
-            // update_servo_position(position_x, position_y);
-            // motor_control(speed1, speed2, speed3, speed4);
+            update_servo_position(position_x, position_y);
+            motor_control(speed1, speed2, speed3, speed4);
 
             previous_status[0] = speed1;
             previous_status[1] = speed2;
@@ -87,8 +87,9 @@ void loop() {
             Serial.print(" position_y: ");
             Serial.print(position_y);
             Serial.print("\n");
-            // update_servo_position(previous_status[4], previous_status[5]);
-            // motor_control(previous_status[0], previous_status[1], previous_status[2], previous_status[3]);
+            
+            update_servo_position(previous_status[4], previous_status[5]);
+            motor_control(previous_status[0], previous_status[1], previous_status[2], previous_status[3]);
         }
 
         while (Serial.read() >= 0) {
