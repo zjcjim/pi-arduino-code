@@ -72,7 +72,21 @@ void loop() {
             previous_status[4] = position_x;
             previous_status[5] = position_y;
         } else {
-            Serial.println("Checksum error");
+            Serial.print("Checksum error: ");
+            Serial.print(checksum);
+            Serial.print("speed1: ");
+            Serial.print(speed1);
+            Serial.print(" speed2: ");
+            Serial.print(speed2);
+            Serial.print(" speed3: ");
+            Serial.print(speed3);
+            Serial.print(" speed4: ");
+            Serial.print(speed4);
+            Serial.print(" position_x: ");
+            Serial.print(position_x);
+            Serial.print(" position_y: ");
+            Serial.print(position_y);
+            Serial.print("\n");
             update_servo_position(previous_status[4], previous_status[5]);
             motor_control(previous_status[0], previous_status[1], previous_status[2], previous_status[3]);
         }
