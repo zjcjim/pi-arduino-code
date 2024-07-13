@@ -21,7 +21,7 @@ void loop() {
         startTime = millis();
 
         if (stringComplete) {
-          //Serial.println(data);
+          //Serial.print(data);
           data.toCharArray(dataArray, 30);
 //
 //        // // 使用sscanf解析数据
@@ -44,6 +44,11 @@ void loop() {
           Serial.print(" Time: ");
           Serial.print(elapsedTime);
           Serial.print("\n");
+
+          while (Serial.read() >= 0) {
+             //Clear the buffer
+          }
+          
           data = "";
           stringComplete = false;
         

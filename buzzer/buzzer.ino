@@ -1,122 +1,94 @@
-int pinBuzzer = 30;  // Define pinBuzzer as pin D3 for connecting the buzzer module
-
-// Define frequencies for the notes
-int A4s = 466;
-int B4 = 494;
-int C5 = 523;
-int C5s = 554;
-int D5 = 587;
-int D5s = 622;
-int E5 = 659;
-int F5 = 698;
-int F5s = 740;
-int G5 = 784;
-int G5s = 831;
-int A55 = 880;
-int A55s = 932;
-int B5 = 988;
-int C6 = 1047;
-int C6s = 1109;
-int D6 = 1175;
-int D6s = 1245;
-int E6 = 1319;
-int F6 = 1397;
-int F6s = 1480;
-int stop = 0;
-
-void playNoteSequence();
-void playNote(int note);
-void playNote05(int note);
-void playNote15(int note);
-void playNote2(int note);
-
-void setup() {
-  pinMode(pinBuzzer, OUTPUT);  // Set pinBuzzer as an output pin
-}
-
-void loop() {
-  playNoteSequence();
-  noTone(pinBuzzer);
-  delay(2000);  // Delay before repeating the song
-}
-
-void playNoteSequence() {
-  playNote(B5);
-  playNote(A55s);
-  playNote(F5s);
-  playNote(F5s);
-  playNote05(G5s);
-  playNote15(G5s);
-  playNote(F5s);
-  playNote(F5s);
-  playNote05(G5s);
-  playNote15(G5s);
-  playNote(F5s);
-  playNote(F5s);
-  playNote05(F5s);
-  playNote15(G5s);
-  playNote(G5s);
-  playNote(G5s);
-  playNote(A55s);
-  playNote(B5);
-  playNote(C6s);
-  playNote2(A55s);
-  playNote2(F5s);
-  playNote2(E6);
-  playNote2(C6s);
-  playNote15(C6s);
-  playNote15(C6s);
-  playNote(D6s);
-  noTone(pinBuzzer);
-  delay(200);
-
-  playNote(B5);
-  playNote(A55s);
-  playNote(F5s);
-  playNote(F5s);
-  playNote05(G5s);
-  playNote15(G5s);
-  playNote(F5s);
-  playNote(F5s);
-  playNote05(G5s);
-  playNote15(G5s);
-  playNote(F5s);
-  playNote(F5s);
-  playNote05(G5s);
-  playNote15(G5s);
-  playNote(G5s);
-  playNote(G5s);
-  playNote(A55s);
-  playNote(B5);
-  playNote(C6s);
-  playNote15(A55s);
-  playNote15(G5s);
-  playNote(D5s);
-  noTone(pinBuzzer);
-  delay(200);
-}
-
-void playNote(int note) {
- tone(pinBuzzer, note);
- delay(200); // Adjust this delay to control the length of each note
- noTone(pinBuzzer);
- delay(20); // Short pause between notes
-}
-void playNote05(int note) {
- tone(pinBuzzer, note);
- delay(100); // Adjust this delay to control the length of each note
- noTone(pinBuzzer);
- delay(20); // Short pause between notes
-}
-void playNote2(int note) {
- tone(pinBuzzer, note);
- delay(400); // Adjust this delay to control the length of each note
- noTone(pinBuzzer);
- delay(20); // Short pause between notes
-}
-void playNote15(int note) {
- tone(pinBuzzer, note);
- delay(300); // Adjust this delay to control the length of each note
- noTone(pinBuzzer);
- delay(20); // Short pause between notes
+#define NOTE_D0 -1 
+#define NOTE_D1 294 
+#define NOTE_D2 330 
+#define NOTE_D3 350 
+#define NOTE_D4 393 
+#define NOTE_D5 441 
+#define NOTE_D6 495 
+#define NOTE_D7 556 
+ 
+#define NOTE_DL1 147 
+#define NOTE_DL2 165 
+#define NOTE_DL3 175 
+#define NOTE_DL4 196 
+#define NOTE_DL5 221 
+#define NOTE_DL6 248 
+#define NOTE_DL7 278 
+ 
+#define NOTE_DH1 589 
+#define NOTE_DH2 661 
+#define NOTE_DH3 700 
+#define NOTE_DH4 786 
+#define NOTE_DH5 882 
+#define NOTE_DH6 990 
+#define NOTE_DH7 112  
+//���ϲ����Ƕ����ǰ�ÿ��������Ƶ��ֵ��Ӧ��������ʵ���ô���ô�࣬���Ƕ������ˣ�������������д
+ 
+#define WHOLE 1 
+#define HALF 0.5 
+#define QUARTER 0.25 
+#define EIGHTH 0.25 
+#define SIXTEENTH 0.625  
+//�ⲿ������Ӣ�Ķ�Ӧ�����ӣ���������Ҳ�ȽϺÿ�
+ 
+ 
+int tune[] =  
+{  
+ NOTE_D0,NOTE_D0,NOTE_D0,NOTE_D6,NOTE_D7,NOTE_DH1,NOTE_D7,NOTE_DH1,NOTE_DH3,NOTE_D7,NOTE_D7,NOTE_D7,NOTE_D3,NOTE_D3,
+ NOTE_D6,NOTE_D5,NOTE_D6,NOTE_DH1,NOTE_D5,NOTE_D5,NOTE_D5,NOTE_D3,NOTE_D4,NOTE_D3,NOTE_D4,NOTE_DH1,
+ NOTE_D3,NOTE_D3,NOTE_D0,NOTE_DH1,NOTE_DH1,NOTE_DH1,NOTE_D7,NOTE_D4,NOTE_D4,NOTE_D7,NOTE_D7,NOTE_D7,NOTE_D0,NOTE_D6,NOTE_D7,
+ NOTE_DH1,NOTE_D7,NOTE_DH1,NOTE_DH3,NOTE_D7,NOTE_D7,NOTE_D7,NOTE_D3,NOTE_D3,NOTE_D6,NOTE_D5,NOTE_D6,NOTE_DH1,
+ NOTE_D5,NOTE_D5,NOTE_D5,NOTE_D2,NOTE_D3,NOTE_D4,NOTE_DH1,NOTE_D7,NOTE_D7,NOTE_DH1,NOTE_DH1,NOTE_DH2,NOTE_DH2,NOTE_DH3,NOTE_DH1,NOTE_DH1,NOTE_DH1,
+ NOTE_DH1,NOTE_D7,NOTE_D6,NOTE_D6,NOTE_D7,NOTE_D5,NOTE_D6,NOTE_D6,NOTE_D6,NOTE_DH1,NOTE_DH2,NOTE_DH3,NOTE_DH2,NOTE_DH3,NOTE_DH5,
+ NOTE_DH2,NOTE_DH2,NOTE_DH2,NOTE_D5,NOTE_D5,NOTE_DH1,NOTE_D7,NOTE_DH1,NOTE_DH3,NOTE_DH3,NOTE_DH3,NOTE_DH3,NOTE_DH3,
+ NOTE_D6,NOTE_D7,NOTE_DH1,NOTE_D7,NOTE_DH2,NOTE_DH2,NOTE_DH1,NOTE_D5,NOTE_D5,NOTE_D5,NOTE_DH4,NOTE_DH3,NOTE_DH2,NOTE_DH1,
+ NOTE_DH3,NOTE_DH3,NOTE_DH3,NOTE_DH3,NOTE_DH6,NOTE_DH6,NOTE_DH5,NOTE_DH5,NOTE_DH3,NOTE_DH2,NOTE_DH1,NOTE_DH1,NOTE_D0,NOTE_DH1,
+ NOTE_DH2,NOTE_DH1,NOTE_DH2,NOTE_DH2,NOTE_DH5,NOTE_DH3,NOTE_DH3,NOTE_DH3,NOTE_DH3,NOTE_DH6,NOTE_DH6,NOTE_DH5,NOTE_DH5,
+ NOTE_DH3,NOTE_DH2,NOTE_DH1,NOTE_DH1,NOTE_D0,NOTE_DH1,NOTE_DH2,NOTE_DH1,NOTE_DH2,NOTE_DH2,NOTE_D7,NOTE_D6,NOTE_D6,NOTE_D6,NOTE_D6,NOTE_D7
+};//�ⲿ�־����������ӵ��������֣�����һ�����ж���Ϊtune������
+ 
+float duration[]= 
+ 
+{  
+  1,1,1,0.5,0.5,     1+0.5,0.5,1,1,     1,1,1,0.5,0.5,
+  1+0.5,0.5,1,1,     1,1,1,1,          1+0.5,0.5,1,1, 
+  1,1,0.5,0.5,0.5,0.5,    1+0.5,0.5,1,1,     1,1,1,0.5,0.5,
+  1+0.5,0.5,1,1,    1,1,1,0.5,0.5,     1+0.5,0.5,1,1,
+  1,1,1,0.5,0.5,    1,0.5,0.25,0.25,0.25,0.5,    0.5,0.5,0.5,0.25,0.5,1,
+  0.5,0.5,0.5,0.5,1,1,    1,1,1,0.5,0.5,    1+0.5,0.5,1,1,
+  1,1,1,0.5,0.5,    1.5,0.5,1,1,    1,1,1,1,
+  0.5,0.5,1,1,0.5,0.5,    1.5,0.25,0.5,1,    1,1,1,1,
+  1,1,1,1,    1,1,1,1,    0.5,0.5,1,1,0.5,0.5,
+  1,0.5,0.5,1,1,    1,1,1,1,    1,1,1,1,
+  0.5,0.5,1,1,0.5,0.5,    1,0.5,0.25,0.5,1,    1,1,1,0.5,0.5
+};//�ⲿ�����������ӵĽ��Ĳ��֣�Ҳ���������duration�����㣨����ĸ�����ǰ�������ĸ�����һ���ģ�һһ��Ӧô��
+ 
+int length;//���ﶨ��һ������������������ʾ���ж��ٸ�����
+ 
+int tonePin=30;//��������pin 
+ 
+ 
+void setup() 
+ 
+{  
+  pinMode(tonePin,OUTPUT);//���÷�������pinΪ���ģʽ
+ 
+  length = sizeof(tune)/sizeof(tune[0]);//��������һ��sizeof������ ���Բ��tone�������ж��ٸ�����
+ 
+} 
+ 
+void loop() 
+ 
+{  
+ 
+  for(int x=0;x<length;x++)//ѭ�������Ĵ���
+  {  
+    tone(tonePin,tune[x]);//�˺������β���tune����������飬��ÿ�� ����
+ 
+ delay(400*duration[x]);//ÿ������������ʱ�䣬������duration���ǵ���ʱ���Խ�������ٶ�Խ����ԽС�����ٶ�Խ�죬�Լ����հ�
+ 
+noTone(tonePin);//ֹͣ��ǰ������������һ����
+ 
+  } 
+  delay(5000);//�ȴ�5���ѭ�����¿�ʼ
 }
