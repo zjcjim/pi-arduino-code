@@ -47,11 +47,13 @@ void loop() {
 
     if (Serial.available()) {
         // 读取一行数据，直到换行符'\n'
+
+        String data;
+
         startTime = millis();
 
-        String data = Serial.readStringUntil('\n');
+        data = Serial.readStringUntil('\n');
 
-        
         endTime = millis();
         elapsedTime = endTime - startTime;
 
@@ -60,7 +62,6 @@ void loop() {
         // 使用sscanf解析数据
         sscanf(dataArray, "%d %d %d %d %d %d %d", &speed1, &speed2, &speed3, &speed4, &position_x, &position_y, &checksum);
 
-        
         // 打印解析后的数据
         if (checksum == speed1 + speed2 + speed3 + speed4 + position_x + position_y) {
             Serial.print("speed1: ");
@@ -75,7 +76,7 @@ void loop() {
             Serial.print(position_x);
             Serial.print(" position_y: ");
             Serial.print(position_y);
-            
+
             Serial.print(" Time: ");
             Serial.print(elapsedTime);
             Serial.print("\n");
