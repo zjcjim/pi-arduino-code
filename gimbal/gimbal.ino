@@ -20,12 +20,9 @@ AF_DCMotor motor4(4);  // The motor number, i.e. 1, 2, 3 or 4
 Servo servo1;
 Servo servo2;
 
-void forward();
-void backward();
-void turn_left();
-void turn_right();
 void stop();
 void update_servo_position(int x, int y);
+void motor_control(int speed1, int speed2, int speed3, int speed4);
 
 void setup() {
     Serial.begin(9600);
@@ -64,35 +61,50 @@ void loop() {
         Serial.print("\n");
 
         update_servo_position(position_x, position_y);
+        motor_control(speed1, speed2, speed3, speed4);
     }
 }
 
-void forward() {
-    motor1.run(FORWARD);
-    motor2.run(FORWARD);
-    motor3.run(FORWARD);
-    motor4.run(FORWARD);
-}
+void motor_control(int speed1, int speed2, int speed3, int speed4) {
+    if (speed1 > 0) {
+        motor1.setSpeed(speed1);
+        motor1.run(FORWARD);
+    } else if (speed1 < 0) {
+        motor1.setSpeed(-speed1);
+        motor1.run(BACKWARD);
+    } else {
+        motor1.run(RELEASE);
+    }
 
-void backward() {
-    motor1.run(BACKWARD);
-    motor2.run(BACKWARD);
-    motor3.run(BACKWARD);
-    motor4.run(BACKWARD);
-}
+    if (speed2 > 0) {
+        motor2.setSpeed(speed2);
+        motor2.run(FORWARD);
+    } else if (speed2 < 0) {
+        motor2.setSpeed(-speed2);
+        motor2.run(BACKWARD);
+    } else {
+        motor2.run(RELEASE);
+    }
 
-void turn_left() {
-    motor1.run(BACKWARD);
-    motor4.run(BACKWARD);
-    motor2.run(FORWARD);
-    motor3.run(FORWARD);
-}
+    if (speed3 > 0) {
+        motor3.setSpeed(speed3);
+        motor3.run(FORWARD);
+    } else if (speed3 < 0) {
+        motor3.setSpeed(-speed3);
+        motor3.run(BACKWARD);
+    } else {
+        motor3.run(RELEASE);
+    }
 
-void turn_right() {
-    motor1.run(FORWARD);
-    motor4.run(FORWARD);
-    motor2.run(BACKWARD);
-    motor3.run(BACKWARD);
+    if (speed4 > 0) {
+        motor4.setSpeed(speed4);
+        motor4.run(FORWARD);
+    } else if (speed4 < 0) {
+        motor4.setSpeed(-speed4);
+        motor4.run(BACKWARD);
+    } else {
+        motor4.run(RELEASE);
+    }
 }
 
 void stop() {
